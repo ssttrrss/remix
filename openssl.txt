@@ -1,0 +1,14 @@
+To make symmetric encryption & decryption use these commands:
+openssl enc -aes-256-cbc -salt -in MAIN.txt –out ENCRYPT.enc
+openssl enc -aes-256-cbc -d -in ENCRYPT.enc -out DECRYPT.txt
+
+To make Asymmetric encryption & decryption use these commands:
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+openssl rsautl -encrypt -inkey public_key.pem -pubin -in myfile.txt -out myfile.enc
+openssl rsautl -decrypt -inkey private_key.pem -in myfile.enc -out myfile_decrypted.txt
+
+if you have your public & private keys and want To make a signature:
+openssl dgst -sha256 -sign private_key.pem -out signature.bin myfile.txt
+Verify the signature using the public key:
+openssl dgst -sha256 -verify public_key.pem -signature signature.bin myfile.txt
